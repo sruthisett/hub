@@ -1,0 +1,94 @@
+import os
+import askdirectory
+import pygame
+from mutagen.id3 import ID3
+from tkinter import *
+
+listofsongs=[]
+realnames = []
+
+v =StringVar()
+songlabel =Label(root,textvariable=v,width='')
+index=0
+count=0
+
+global ctr
+ctr=0
+
+
+def updatelabel():
+    global index
+    global songname
+    v.set(listofsongs[index])
+    #return songname
+
+def pausesong(event):
+    global ctr
+    ctr += 1
+    if (ctr%2!=0):
+        pygame.mixer.music.pause()
+    if(ctr%2==0):
+        pygame.mixer.music.unpause()
+
+def playsong(event):
+    pygame.mixer.music.play()
+
+
+def nextsong(event):
+    global index
+    index += 1
+    if (index < count):
+        pygame.mixer.music.load(listofsongs[index])
+        pygame.mixer.music.play()
+    else:
+        index = 0
+        pygame.mixer.music.load(listofsongs[index])
+        pygame.mixer.music.play()
+    try:
+      updatelabel()
+    except NameError:
+        print("")
+
+
+def stopsong(event):
+
+    pygame.mixer.music.stop()
+    #v.set("")
+    #return songname
+def mute(event):
+    vol.set(0)
+
+
+
+label = Label(root,text="Music Player")
+label.pack()
+
+
+
+def directorychooser():
+  global count
+  global index
+    #count=0
+
+  directory = askdirectory()
+  if(directory):
+    count=0
+    index=0
+#listbox.delete(0, END)
+    del listofsongs[:]
+    del realnames[:]
+
+realnames.reverse()
+
+songlabel.pack()
+
+openbutton = Button(framedown,text="open")
+mutebutton = Button(framedown)
+previousbutton = Button(framedown,text="<<")
+playbutton = Button(framedown,text=">")
+stopbutton = Button(framedown,text="*")
+nextbutton = Button(framedown,text=">>")
+pausebutton = Button(framedown,text="||")
+root.mainloop()
+
+    
